@@ -322,11 +322,16 @@ DECODERS = {
             "Using complex jargon to confuse clients"
         ],
         "premium_tactics": [
-            "Churning - excessive trading to generate commissions",
-            "Selling proprietary products with hidden fees",
-            "Cold calling during vulnerable life events",
-            "Bait-and-switch investment recommendations",
-            "Using fake credentials or misleading titles"
+            "The 5-Stage Psychological Manipulation Process: PREPARE (planning influence), CONNECT (false intimacy), EXPLORE (extracting vulnerabilities), PRESENT (using your words against you), DEVELOP (securing the close)",
+            "Variable compensation 55-80% creates bias - advisors at major firms earn more from complex products vs simple investments",
+            "Revenue sharing agreements with fund companies - advisors get paid by investment companies to sell their products",
+            "The 'FIND' questioning technique: Facts (your situation), Issues (pain points), Needs (what you want), Drivers (emotional triggers)",
+            "State of mind manipulation - trained to manage your emotional state during meetings to increase receptivity",
+            "Real compensation data: Company A pays 0.001 rate for Wealth Services vs 0.0001 for Money Market (10x difference)",
+            "Company B relationship pay: 32-42 basis points for managed accounts vs 9-12 for self-directed (3-4x difference)",
+            "Solutions pay bonuses: $200 per $100k enrolled in advisory programs creates enrollment bias",
+            "Asset consolidation incentives: $80 per $100k transferred creates pressure to move your accounts",
+            "Annual engagement fees on your balances - ongoing payments based on what you invest in"
         ],
         "preview_tips": [
             "Always ask for fee disclosures in writing",
@@ -334,11 +339,16 @@ DECODERS = {
             "Get a second opinion from a fee-only advisor"
         ],
         "premium_tips": [
-            "Check advisor's FINRA BrokerCheck record",
-            "Understand the difference between fiduciary and suitability standards",
-            "Calculate total cost of ownership for all investments",
-            "Review statements for unauthorized transactions",
-            "Know your rights for dispute resolution through FINRA arbitration"
+            "Essential first meeting questions: 'How exactly are you compensated? Are you a fiduciary at all times? Do you receive money from fund companies?'",
+            "Fee negotiation: Fees are often negotiable, especially for larger accounts - ask for written breakdown and compare to industry averages",
+            "Decode advisor-speak: 'Let's diversify your portfolio' = I want fees from multiple sources. 'Professional management' = I earn more from managed accounts",
+            "Use the meeting prep tool: Bring specific questions about their compensation structure and document their answers",
+            "Conflict identification: Look for commission-based compensation, proprietary products, revenue sharing, sales contests, referral bonuses",
+            "Check FINRA BrokerCheck for complaints and disciplinary actions before meeting",
+            "Understand fiduciary vs suitability standards - fiduciaries must act in your best interest at ALL times",
+            "Calculate total cost of ownership: Include management fees, platform fees, fund expenses, and trading costs",
+            "Company-specific protections: Company C charges $175 annual fees unless you have $500k+ - know these pressure tactics",
+            "Use their psychology against them: Ask 'What would you recommend if you weren't paid differently for various products?'"
         ],
         "preview_flags": [
             "Refuses to explain fees clearly",
@@ -346,11 +356,16 @@ DECODERS = {
             "Only recommends high-fee products"
         ],
         "premium_flags": [
-            "Claims to be a 'financial planner' without proper credentials",
-            "Avoids putting recommendations in writing",
-            "Discourages you from reading prospectuses",
-            "Has complaints or disciplinary actions on their record",
-            "Pressures you to liquidate existing investments immediately"
+            "Psychological red flag phrases: 'This is what I use for my own family', 'You need to act quickly', 'Don't worry about the fees'",
+            "State manipulation tactics: Meeting designed to impress/intimidate, using your fears to create urgency, making you feel special",
+            "The 5-stage process in action: Overly structured meetings, questions designed to find vulnerabilities, using your own words against you",
+            "Compensation-driven recommendations: Only suggesting products from companies with revenue sharing agreements",
+            "False scarcity tactics: 'This opportunity won't be available next week', 'I can only offer this rate if you decide today'",
+            "EXPLORE stage red flags: Questions like 'What keeps you up at night about money?' designed to find emotional pressure points",
+            "PRESENT stage manipulation: 'Remember when you said your biggest fear was...' using your vulnerabilities against you",
+            "Revenue sharing concealment: Mentions fund performance but won't disclose they receive payments from fund companies",
+            "Annual fee pressure: Company C-style tactics pressuring you toward advisory accounts to 'waive' fees",
+            "Referral payment conflicts: Introducing you to 'specialists' because they earn $450-$3,500 referral bonuses"
         ]
     },
     "real_estate": {
@@ -705,6 +720,11 @@ def show_decoder_detail(decoder_key):
             </div>
             """, unsafe_allow_html=True)
     
+    # Founding Member Document Analysis
+    if st.session_state.is_premium:
+        st.markdown("---")
+        show_document_analysis(decoder_key)
+    
     # Premium features section for free users
     if not st.session_state.is_premium:
         st.markdown("---")
@@ -713,10 +733,11 @@ def show_decoder_detail(decoder_key):
         prem_col1, prem_col2 = st.columns(2)
         with prem_col1:
             st.markdown("""
-            **📄 Lifetime Document Analysis**
+            **📄 AI-Powered Document Analysis**
             - Upload ANY contracts across all decoder categories - forever
-            - AI-powered analysis for financial, real estate, auto & funeral documents
-            - Get plain-English explanations of complex language - no limits
+            - Advanced AI analysis for financial, real estate, auto & funeral documents
+            - Get plain-English explanations and red flag detection - no limits
+            - Download detailed analysis reports for your records
             """)
         
         with prem_col2:
@@ -725,6 +746,7 @@ def show_decoder_detail(decoder_key):
             - Deep-dive into manipulation psychology across ALL industries
             - Learn cognitive biases exploited by every type of salesperson
             - Master counter-techniques for any sales situation - lifetime access
+            - Real compensation data from actual industry disclosure documents
             """)
         
         show_premium_upgrade()
