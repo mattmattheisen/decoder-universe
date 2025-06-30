@@ -41,6 +41,39 @@ st.markdown("""
         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     }
     
+    .premium-badge {
+        background: linear-gradient(45deg, #FFD700, #FFA500);
+        color: #333;
+        padding: 0.2rem 0.6rem;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        display: inline-block;
+    }
+    
+    .preview-badge {
+        background: #28a745;
+        color: white;
+        padding: 0.2rem 0.6rem;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        display: inline-block;
+    }
+    
+    .coming-soon-badge {
+        background: #6c757d;
+        color: white;
+        padding: 0.2rem 0.6rem;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        display: inline-block;
+    }
+    
     .card-icon {
         font-size: 2.5rem;
         text-align: center;
@@ -62,14 +95,12 @@ st.markdown("""
         line-height: 1.4;
     }
     
-    .back-button {
-        background: #667eea;
-        color: white;
-        border: none;
-        padding: 0.5rem 1rem;
-        border-radius: 8px;
-        font-weight: bold;
-        margin-bottom: 1rem;
+    .premium-overlay {
+        background: rgba(255, 215, 0, 0.1);
+        border: 2px solid #FFD700;
+        border-radius: 15px;
+        padding: 1rem;
+        margin: 1rem 0;
     }
     
     .tactic-warning {
@@ -95,133 +126,250 @@ st.markdown("""
         border-radius: 8px;
         margin: 1rem 0;
     }
+    
+    .upgrade-cta {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        text-align: center;
+        margin: 2rem 0;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
 </style>
 """, unsafe_allow_html=True)
 
-# Decoder data structure
+# Session state initialization
+if 'is_premium' not in st.session_state:
+    st.session_state.is_premium = False
+if 'current_decoder' not in st.session_state:
+    st.session_state.current_decoder = None
+
+# Decoder data structure with preview vs premium content
 DECODERS = {
     "financial_advisor": {
         "name": "Financial Advisor Decoder",
         "icon": "💰",
         "description": "Protect yourself from high-pressure financial advisor sales tactics",
-        "tactics": [
+        "is_available": True,
+        "preview_tactics": [
             "Creating artificial urgency: 'This offer expires today!'",
-            "Fear-mongering about market crashes or retirement security",
-            "Pushing expensive products with high commissions",
-            "Using complex jargon to confuse and intimidate",
-            "Claiming exclusive access to 'special' investments",
+            "Fear-mongering about market crashes",
+            "Using complex jargon to confuse clients"
         ],
-        "protection_tips": [
+        "premium_tactics": [
+            "Churning - excessive trading to generate commissions",
+            "Selling proprietary products with hidden fees",
+            "Cold calling during vulnerable life events",
+            "Bait-and-switch investment recommendations",
+            "Using fake credentials or misleading titles"
+        ],
+        "preview_tips": [
             "Always ask for fee disclosures in writing",
-            "Take time to research any investment recommendation",
-            "Get a second opinion from a fee-only advisor",
-            "Understand exactly how your advisor gets paid",
-            "Never sign anything under pressure",
+            "Take time to research any recommendation",
+            "Get a second opinion from a fee-only advisor"
         ],
-        "red_flags": [
+        "premium_tips": [
+            "Check advisor's FINRA BrokerCheck record",
+            "Understand the difference between fiduciary and suitability standards",
+            "Calculate total cost of ownership for all investments",
+            "Review statements for unauthorized transactions",
+            "Know your rights for dispute resolution through FINRA arbitration"
+        ],
+        "preview_flags": [
             "Refuses to explain fees clearly",
-            "Pushes immediate decisions without time to think",
-            "Only recommends high-fee products",
-            "Won't provide references or credentials",
-            "Uses scare tactics about your financial future",
+            "Pushes immediate decisions",
+            "Only recommends high-fee products"
+        ],
+        "premium_flags": [
+            "Claims to be a 'financial planner' without proper credentials",
+            "Avoids putting recommendations in writing",
+            "Discourages you from reading prospectuses",
+            "Has complaints or disciplinary actions on their record",
+            "Pressures you to liquidate existing investments immediately"
         ]
     },
     "real_estate": {
         "name": "Real Estate Agent Decoder",
         "icon": "🏠",
         "description": "Navigate high-pressure real estate tactics and understand what agents really mean",
-        "tactics": [
+        "is_available": True,
+        "preview_tactics": [
             "'Other buyers are interested' - creating false competition",
-            "Suggesting inflated listing prices to win your business",
-            "Rushing you through property viewings",
-            "Downplaying property issues or neighborhood problems",
-            "Using emotional manipulation: 'Perfect for your family!'",
+            "Suggesting inflated listing prices to win business",
+            "Rushing you through property viewings"
         ],
-        "protection_tips": [
-            "Research comparable sales yourself using online tools",
-            "Get pre-approved for financing before house hunting",
-            "Take time between viewing and deciding",
-            "Hire your own home inspector, not agent's recommendation",
-            "Understand dual agency conflicts of interest",
+        "premium_tactics": [
+            "Dual agency without proper disclosure",
+            "Steering buyers away from certain neighborhoods",
+            "Withholding negative property information",
+            "Pocket listings to benefit preferred buyers",
+            "Inflating comparable sales data"
         ],
-        "red_flags": [
+        "preview_tips": [
+            "Research comparable sales yourself",
+            "Get pre-approved financing before hunting",
+            "Take time between viewing and deciding"
+        ],
+        "premium_tips": [
+            "Understand agency relationships and fiduciary duties",
+            "Use independent home inspectors and appraisers",
+            "Research neighborhood crime, schools, and development plans",
+            "Know your rights under state real estate disclosure laws",
+            "Negotiate commission rates and terms upfront"
+        ],
+        "preview_flags": [
             "Pressures you to make offers without inspection",
-            "Won't provide market analysis or comparables",
-            "Discourages you from negotiating",
-            "Seems more interested in quick sale than your needs",
-            "Represents both buyer and seller without disclosure",
+            "Won't provide market analysis",
+            "Discourages negotiating"
+        ],
+        "premium_flags": [
+            "Represents both parties without clear written disclosure",
+            "Rushes you through contract signing",
+            "Discourages attorney review of contracts",
+            "Won't provide references from recent clients",
+            "Shows properties only during optimal conditions"
         ]
     },
     "car_salesman": {
         "name": "Car Salesman Decoder",
         "icon": "🚗",
         "description": "Decode car dealership tricks and negotiate with confidence",
-        "tactics": [
+        "is_available": True,
+        "preview_tactics": [
             "Four-square method to confuse pricing",
-            "'What payment can you afford?' - focusing on monthly payment only",
-            "Bait and switch - advertised car not available",
-            "Extended warranty and add-on pressure after price agreement",
-            "Good cop/bad cop with manager approval theater",
+            "'What payment can you afford?' approach",
+            "Bait and switch with advertised cars"
         ],
-        "protection_tips": [
-            "Research vehicle value using KBB, Edmunds, and AutoTrader",
-            "Get financing pre-approved from your bank or credit union",
-            "Negotiate total price, not monthly payment",
-            "Be prepared to walk away if pressured",
-            "Understand what warranties you actually need",
+        "premium_tactics": [
+            "Yo-yo financing - calling back after deal is signed",
+            "Packing payments with unnecessary add-ons",
+            "Spot delivery before financing is finalized",
+            "Trade-in lowballing and equity manipulation",
+            "Extended warranty fear tactics"
         ],
-        "red_flags": [
-            "Won't let you take car to independent mechanic",
-            "Refuses to negotiate or provide written estimates",
-            "Adds surprise fees at signing",
-            "Pressures you to decide today",
-            "Won't explain financing terms clearly",
+        "preview_tips": [
+            "Research vehicle value using KBB and Edmunds",
+            "Get financing pre-approved from bank",
+            "Negotiate total price, not monthly payment"
+        ],
+        "premium_tips": [
+            "Understand dealer holdback and manufacturer incentives",
+            "Know the difference between invoice and MSRP",
+            "Get all agreements in writing before signing",
+            "Understand your right to cancel extended warranties",
+            "Know lemon law protections in your state"
+        ],
+        "preview_flags": [
+            "Won't let you take car to mechanic",
+            "Refuses to negotiate or provide estimates",
+            "Adds surprise fees at signing"
+        ],
+        "premium_flags": [
+            "Changes terms after verbal agreement",
+            "Pressures you to buy same day with 'manager specials'",
+            "Won't explain financing terms line by line",
+            "Insists on spot delivery before loan approval",
+            "Makes verbal promises not included in written contract"
         ]
     },
     "funeral_director": {
         "name": "Funeral Home Director Decoder",
         "icon": "⚱️",
         "description": "Navigate funeral arrangements with confidence and avoid unnecessary upselling during difficult times",
-        "tactics": [
-            "Exploiting grief and guilt to upsell expensive packages",
-            "Suggesting cheaper options show 'lack of love' for deceased",
-            "Bundling unnecessary services together",
-            "Creating time pressure during emotional vulnerability",
-            "Using religious or cultural guilt to justify higher costs",
+        "is_available": True,
+        "preview_tactics": [
+            "Exploiting grief to upsell expensive packages",
+            "Suggesting cheaper options show 'lack of love'",
+            "Bundling unnecessary services together"
         ],
-        "protection_tips": [
+        "premium_tactics": [
+            "Claiming embalming is required when it's not",
+            "Refusing to show basic casket options first",
+            "Adding unauthorized charges for 'standard' services",
+            "Pressuring immediate payment in full",
+            "Misrepresenting legal requirements"
+        ],
+        "preview_tips": [
             "Ask for itemized price lists (required by law)",
-            "You can purchase caskets from third-party vendors",
-            "Embalming is rarely required by law",
-            "Consider bringing a trusted friend for support",
-            "Know that you can shop around even after death",
+            "Know you can purchase caskets elsewhere",
+            "Understand embalming is rarely required"
         ],
-        "red_flags": [
+        "premium_tips": [
+            "Know your rights under the FTC Funeral Rule",
+            "Understand the difference between burial and cremation costs",
+            "Get multiple quotes for comparison",
+            "Know which services are actually required by law",
+            "Understand pre-need contract protections and cancellation rights"
+        ],
+        "preview_flags": [
             "Won't provide written price lists",
-            "Claims certain services are 'required' when they're not",
-            "Pressures immediate decisions on expensive items",
-            "Discourages price shopping or comparisons",
-            "Uses emotional manipulation about 'honoring' the deceased",
+            "Claims services are 'required' when optional",
+            "Pressures immediate expensive decisions"
+        ],
+        "premium_flags": [
+            "Refuses to accept caskets from other vendors",
+            "Won't itemize charges or explain fees",
+            "Discourages price shopping with other funeral homes",
+            "Makes verbal promises not included in written contracts",
+            "Charges for services without authorization"
         ]
     }
 }
+
+# Coming Soon decoders
+COMING_SOON = [
+    {"name": "Timeshare Decoder", "icon": "🏖️", "description": "Escape timeshare presentation traps and high-pressure vacation sales"},
+    {"name": "Crypto Decoder", "icon": "₿", "description": "Identify cryptocurrency scams and predatory investment schemes"},
+    {"name": "Insurance Decoder", "icon": "🛡️", "description": "Navigate insurance sales tactics and understand policy fine print"}
+]
+
+def show_premium_upgrade():
+    """Display premium upgrade call-to-action"""
+    st.markdown("""
+    <div class="upgrade-cta">
+        <h3>🔓 Unlock Full Protection with Decoder Universe Premium</h3>
+        <p>Get access to comprehensive analysis tools, detailed tactics libraries, and advanced protection strategies for just <strong>$9.95/month</strong></p>
+        <ul style="text-align: left; max-width: 400px; margin: 1rem auto;">
+            <li>✅ Unlimited document scanning & analysis</li>
+            <li>✅ Complete tactics & red flags databases</li>
+            <li>✅ Advanced psychological manipulation guides</li>
+            <li>✅ Conflict of interest detection tools</li>
+            <li>✅ Priority customer support</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        if st.button("🔥 Upgrade to Premium - $9.95/month", use_container_width=True, type="primary"):
+            st.session_state.is_premium = True
+            st.success("🎉 Welcome to Premium! You now have access to all advanced features.")
+            st.rerun()
 
 def show_dashboard():
     st.markdown("""
     <div class="main-header">
         <h1>🛡️ Decoder Universe</h1>
-        <p>Protect Yourself from High-Pressure Sales Tactics</p>
+        <p>Protect Yourself from High-Pressure Sales Tactics<br>Don't Get Sold - Get Decoded</p>
     </div>
     """, unsafe_allow_html=True)
     
-    st.markdown("### Choose Your Decoder")
-    st.markdown("Click on any decoder below to learn how to protect yourself from common sales manipulation tactics.")
+    # Premium status indicator
+    if st.session_state.is_premium:
+        st.success("🔓 **Premium Account Active** - You have access to all advanced features!")
+    else:
+        st.info("🔍 **Free Preview Mode** - Upgrade to unlock advanced protection tools")
     
-    # Create columns for decoder cards
+    st.markdown("### Available Decoders")
+    
+    # Main decoders in 2x2 grid
     cols = st.columns(2)
     
     for i, (key, decoder) in enumerate(DECODERS.items()):
         with cols[i % 2]:
+            badge_html = '<div class="premium-badge">Premium Features Available</div>' if not st.session_state.is_premium else '<div class="preview-badge">Premium Active</div>'
+            
             if st.button(
                 f"{decoder['icon']}\n\n**{decoder['name']}**\n\n{decoder['description']}", 
                 key=f"btn_{key}",
@@ -229,6 +377,31 @@ def show_dashboard():
             ):
                 st.session_state.current_decoder = key
                 st.rerun()
+            
+            # Show premium badge
+            st.markdown(badge_html, unsafe_allow_html=True)
+    
+    # Coming Soon section
+    st.markdown("---")
+    st.markdown("### 🚀 Coming Soon")
+    st.markdown("*Expanding our protection universe with these upcoming decoders:*")
+    
+    coming_cols = st.columns(3)
+    for i, decoder in enumerate(COMING_SOON):
+        with coming_cols[i]:
+            st.markdown(f"""
+            <div style="text-align: center; padding: 1rem; border: 2px dashed #ccc; border-radius: 10px; margin: 0.5rem 0;">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">{decoder['icon']}</div>
+                <div class="coming-soon-badge">Coming Soon</div>
+                <div style="font-weight: bold; margin: 0.5rem 0;">{decoder['name']}</div>
+                <div style="font-size: 0.9rem; color: #666;">{decoder['description']}</div>
+            </div>
+            """, unsafe_allow_html=True)
+    
+    # Premium upgrade CTA for free users
+    if not st.session_state.is_premium:
+        st.markdown("---")
+        show_premium_upgrade()
 
 def show_decoder_detail(decoder_key):
     decoder = DECODERS[decoder_key]
@@ -238,9 +411,11 @@ def show_decoder_detail(decoder_key):
         st.session_state.current_decoder = None
         st.rerun()
     
-    # Header
+    # Header with premium status
+    premium_indicator = "🔓 Premium" if st.session_state.is_premium else "🔍 Preview Mode"
     st.markdown(f"""
     <div style="text-align: center; padding: 1rem 0;">
+        <div style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">{premium_indicator}</div>
         <h1>{decoder['icon']} {decoder['name']}</h1>
         <p style="font-size: 1.2rem; color: #666;">{decoder['description']}</p>
     </div>
@@ -251,32 +426,116 @@ def show_decoder_detail(decoder_key):
     
     with col1:
         st.markdown("### ⚠️ Common Tactics")
-        for tactic in decoder['tactics']:
+        
+        # Show preview tactics
+        for tactic in decoder['preview_tactics']:
             st.markdown(f"""
             <div class="tactic-warning">
                 <strong>Tactic:</strong> {tactic}
             </div>
             """, unsafe_allow_html=True)
+        
+        # Show premium tactics if user has premium
+        if st.session_state.is_premium:
+            st.markdown("**🔓 Premium Tactics:**")
+            for tactic in decoder['premium_tactics']:
+                st.markdown(f"""
+                <div class="tactic-warning">
+                    <strong>Advanced:</strong> {tactic}
+                </div>
+                """, unsafe_allow_html=True)
+        else:
+            st.markdown("""
+            <div class="premium-overlay">
+                <strong>🔒 Premium Feature</strong><br>
+                Unlock 5+ additional advanced tactics used by industry professionals.<br>
+                <em>Upgrade to see sophisticated manipulation techniques and how to counter them.</em>
+            </div>
+            """, unsafe_allow_html=True)
     
     with col2:
         st.markdown("### 🛡️ Protection Tips")
-        for tip in decoder['protection_tips']:
+        
+        # Show preview tips
+        for tip in decoder['preview_tips']:
             st.markdown(f"""
             <div class="protection-tip">
                 <strong>Protect:</strong> {tip}
             </div>
             """, unsafe_allow_html=True)
+        
+        # Show premium tips if user has premium
+        if st.session_state.is_premium:
+            st.markdown("**🔓 Premium Protection:**")
+            for tip in decoder['premium_tips']:
+                st.markdown(f"""
+                <div class="protection-tip">
+                    <strong>Advanced:</strong> {tip}
+                </div>
+                """, unsafe_allow_html=True)
+        else:
+            st.markdown("""
+            <div class="premium-overlay">
+                <strong>🔒 Premium Feature</strong><br>
+                Access 5+ expert-level protection strategies.<br>
+                <em>Upgrade for comprehensive defense techniques and legal insights.</em>
+            </div>
+            """, unsafe_allow_html=True)
     
     with col3:
         st.markdown("### 🚩 Red Flags")
-        for flag in decoder['red_flags']:
+        
+        # Show preview flags
+        for flag in decoder['preview_flags']:
             st.markdown(f"""
             <div class="red-flag">
                 <strong>Warning:</strong> {flag}
             </div>
             """, unsafe_allow_html=True)
+        
+        # Show premium flags if user has premium
+        if st.session_state.is_premium:
+            st.markdown("**🔓 Premium Red Flags:**")
+            for flag in decoder['premium_flags']:
+                st.markdown(f"""
+                <div class="red-flag">
+                    <strong>Critical:</strong> {flag}
+                </div>
+                """, unsafe_allow_html=True)
+        else:
+            st.markdown("""
+            <div class="premium-overlay">
+                <strong>🔒 Premium Feature</strong><br>
+                Discover 5+ critical warning signs that only experts know.<br>
+                <em>Upgrade to identify the most dangerous red flags.</em>
+            </div>
+            """, unsafe_allow_html=True)
     
-    # Additional resources section
+    # Premium features section for free users
+    if not st.session_state.is_premium:
+        st.markdown("---")
+        st.markdown("### 🔒 Premium-Only Features")
+        
+        prem_col1, prem_col2 = st.columns(2)
+        with prem_col1:
+            st.markdown("""
+            **📄 Document Analysis**
+            - Upload contracts for AI-powered analysis
+            - Identify hidden clauses and unfavorable terms
+            - Get plain-English explanations of complex language
+            """)
+        
+        with prem_col2:
+            st.markdown("""
+            **🧠 Psychological Tactics Guide**
+            - Deep-dive into manipulation psychology
+            - Learn about cognitive biases exploited by salespeople
+            - Master counter-techniques and mental defenses
+            """)
+        
+        show_premium_upgrade()
+    
+    # Universal remember section
     st.markdown("---")
     st.markdown("### 💡 Remember")
     st.info(
@@ -289,10 +548,6 @@ def show_decoder_detail(decoder_key):
     )
 
 def main():
-    # Initialize session state
-    if 'current_decoder' not in st.session_state:
-        st.session_state.current_decoder = None
-    
     # Show appropriate page
     if st.session_state.current_decoder:
         show_decoder_detail(st.session_state.current_decoder)
