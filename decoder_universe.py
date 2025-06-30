@@ -371,7 +371,7 @@ def show_dashboard():
     
     for i, (key, decoder) in enumerate(DECODERS.items()):
         with cols[i % 2]:
-            badge_html = '<div class="premium-badge">Premium Features Available</div>' if not st.session_state.is_premium else '<div class="preview-badge">Premium Active</div>'
+            badge_html = '<div class="premium-badge">Founding Member Features Available</div>' if not st.session_state.is_premium else '<div class="preview-badge">Founding Member Active</div>'
             
             if st.button(
                 f"{decoder['icon']}\n\n**{decoder['name']}**\n\n{decoder['description']}", 
@@ -442,7 +442,7 @@ def show_decoder_detail(decoder_key):
         st.rerun()
     
     # Header with premium status
-    premium_indicator = "🔓 Premium" if st.session_state.is_premium else "🔍 Preview Mode"
+    premium_indicator = "🌟 Founding Member" if st.session_state.is_premium else "🔍 Preview Mode"
     st.markdown(f"""
     <div style="text-align: center; padding: 1rem 0;">
         <div style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">{premium_indicator}</div>
@@ -467,7 +467,7 @@ def show_decoder_detail(decoder_key):
         
         # Show premium tactics if user has premium
         if st.session_state.is_premium:
-            st.markdown("**🔓 Premium Tactics:**")
+            st.markdown("**🌟 Founding Member Tactics:**")
             for tactic in decoder['premium_tactics']:
                 st.markdown(f"""
                 <div class="tactic-warning">
@@ -496,7 +496,7 @@ def show_decoder_detail(decoder_key):
         
         # Show premium tips if user has premium
         if st.session_state.is_premium:
-            st.markdown("**🔓 Premium Protection:**")
+            st.markdown("**🌟 Founding Member Protection:**")
             for tip in decoder['premium_tips']:
                 st.markdown(f"""
                 <div class="protection-tip">
@@ -525,7 +525,7 @@ def show_decoder_detail(decoder_key):
         
         # Show premium flags if user has premium
         if st.session_state.is_premium:
-            st.markdown("**🔓 Premium Red Flags:**")
+            st.markdown("**🌟 Founding Member Red Flags:**")
             for flag in decoder['premium_flags']:
                 st.markdown(f"""
                 <div class="red-flag">
@@ -535,24 +535,24 @@ def show_decoder_detail(decoder_key):
         else:
             st.markdown("""
             <div class="premium-overlay">
-                <strong>🔒 Universe Premium Feature</strong><br>
+                <strong>🔒 Founding Member Feature</strong><br>
                 Discover 5+ critical warning signs across ALL decoder categories.<br>
-                <em>One upgrade unlocks expert red flags for every sales scenario.</em>
+                <em>Founding members get expert red flags for every sales scenario - forever!</em>
             </div>
             """, unsafe_allow_html=True)
     
     # Premium features section for free users
     if not st.session_state.is_premium:
         st.markdown("---")
-        st.markdown("### 🔒 Premium Universe Features")
+        st.markdown("### 🔒 Founding Member Exclusive Features")
         
         prem_col1, prem_col2 = st.columns(2)
         with prem_col1:
             st.markdown("""
-            **📄 Universal Document Analysis**
-            - Upload ANY contracts across all decoder categories
+            **📄 Lifetime Document Analysis**
+            - Upload ANY contracts across all decoder categories - forever
             - AI-powered analysis for financial, real estate, auto & funeral documents
-            - Get plain-English explanations of complex language
+            - Get plain-English explanations of complex language - no limits
             """)
         
         with prem_col2:
@@ -560,7 +560,7 @@ def show_decoder_detail(decoder_key):
             **🧠 Complete Psychology Tactics Library**
             - Deep-dive into manipulation psychology across ALL industries
             - Learn cognitive biases exploited by every type of salesperson
-            - Master counter-techniques for any sales situation
+            - Master counter-techniques for any sales situation - lifetime access
             """)
         
         show_premium_upgrade()
