@@ -1,5 +1,8 @@
 import streamlit as st
 from datetime import datetime
+import PyPDF2
+import docx
+from openai import OpenAI
 
 # Page configuration
 st.set_page_config(
@@ -138,6 +141,167 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+
+# Session state initialization
+if 'is_premium' not in st.session_state:
+    st.session_state.is_premium = False
+if 'current_decoder' not in st.session_state:
+    st.session_state.current_decoder = None
+
+def extract_text_from_file(uploaded_file):
+    """Extract text from various file types"""
+    text = ""
+    
+    if uploaded_file.type == "application/pdf":
+        try:
+            pdf_reader = PyPDF2.PdfReader(uploaded_file)
+            for page in pdf_reader.pages:
+                text += page.extract_text()
+        except Exception as e:
+            st.error(f"Error reading PDF: {str(e)}")
+            return None
+            
+    elif uploaded_file.type == "text/plain":
+        text = str(uploaded_file.read(), "utf-8")
+        
+    elif uploaded_file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        try:
+            doc = docx.Document(uploaded_file)
+            for paragraph in doc.paragraphs:
+                text += paragraph.text + "\n"
+        except Exception as e:
+            st.error(f"Error reading Word document: {str(e)}")
+            return None
+            
+    else:
+        st.error("Unsupported file type. Please upload PDF, TXT, or DOCX files.")
+        return None
+    
+    return text
+
+def analyze_document_with_ai(file_content, decoder_type):
+    """Analyze document using OpenAI based on decoder type"""
+    
+    try:
+        # Initialize OpenAI client
+        client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+        
+        # Create decoder-specific prompts
+        prompts = {
+            "financial_advisor": f"""
+            Analyze this financial document for hidden fees, conflicts of interest, and predatory tactics.
+            
+            Document: {file_content}
+            
+            Provide analysis in this format:
+            1. FEES IDENTIFIED: List specific fees with percentages/amounts
+            2. CONFLICT INDICATORS: Note any compensation conflicts
+            3. RED FLAGS: Identify manipulative language or high-pressure tactics
+            4. RECOMMENDATIONS: Suggest protective actions
+            
+            Focus on: advisor compensation, hidden fees, revenue sharing, proprietary products.
+            """,
+            
+            "real_estate": f"""
+            Analyze this real estate document for predatory practices and hidden costs.
+            
+            Document: {file_content}
+            
+            Provide analysis in this format:
+            1. COSTS IDENTIFIED: All fees, commissions, and charges
+            2. AGENCY CONFLICTS: Dual agency or representation issues  
+            3. RED FLAGS: Pressure tactics or misleading information
+            4. RECOMMENDATIONS: Protective steps to take
+            
+            Focus on: agent commissions, dual agency, inflated prices, rushed decisions.
+            """,
+            
+            "car_salesman": f"""
+            Analyze this automotive document for dealership tricks and hidden costs.
+            
+            Document: {file_content}
+            
+            Provide analysis in this format:
+            1. COSTS IDENTIFIED: All fees, financing terms, and add-ons
+            2. FINANCING TRICKS: Interest rate markups or payment manipulation
+            3. RED FLAGS: Bait-and-switch or pressure tactics
+            4. RECOMMENDATIONS: Negotiation strategies
+            
+            Focus on: dealer markup, financing scams, unnecessary add-ons, pressure tactics.
+            """,
+            
+            "funeral_director": f"""
+            Analyze this funeral service document for unnecessary costs and emotional manipulation.
+            
+            Document: {file_content}
+            
+            Provide analysis in this format:
+            1. COSTS IDENTIFIED: All service fees and merchandise charges
+            2. UNNECESSARY SERVICES: Optional items presented as required
+            3. RED FLAGS: Emotional manipulation or legal misrepresentations
+            4. RECOMMENDATIONS: Ways to reduce costs legally
+            
+            Focus on: required vs optional services, emotional manipulation, overpricing, legal requirements.
+            """
+        }
+        
+        prompt = prompts.get(decoder_type, prompts["financial_advisor"])
+        
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=1000,
+            temperature=0.3
+        )
+        
+        return response.choices[0].message.content
+        
+    except Exception as e:
+        return f"Error analyzing document: {str(e)}. Please check your OpenAI API key configuration."
+
+def show_document_analysis(decoder_key):
+    """Show document analysis feature for founding members"""
+    st.markdown("### 📄 AI-Powered Document Analysis")
+    st.markdown("*Upload contracts, agreements, or proposals for intelligent analysis*")
+    
+    uploaded_file = st.file_uploader(
+        "Choose a document to analyze",
+        type=['pdf', 'docx', 'txt'],
+        help="Upload financial documents, contracts, or proposals for AI analysis",
+        key=f"doc_upload_{decoder_key}"
+    )
+    
+    if uploaded_file is not None:
+        st.success("✅ Document uploaded successfully!")
+        
+        col1, col2 = st.columns([2, 1])
+        with col1:
+            st.write(f"**File:** {uploaded_file.name}")
+            st.write(f"**Size:** {uploaded_file.size / 1024:.1f} KB")
+        
+        with col2:
+            if st.button("🔍 Analyze Document", use_container_width=True):
+                with st.spinner("🤖 AI is analyzing your document..."):
+                    # Extract text
+                    extracted_text = extract_text_from_file(uploaded_file)
+                    
+                    if extracted_text:
+                        # Analyze with AI
+                        analysis_result = analyze_document_with_ai(extracted_text, decoder_key)
+                        
+                        # Display results
+                        st.markdown("### 📊 Analysis Results")
+                        st.markdown(analysis_result)
+                        
+                        # Add download option
+                        st.download_button(
+                            label="📥 Download Analysis Report",
+                            data=f"Document Analysis Report\n\nFile: {uploaded_file.name}\nAnalyzed: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n{analysis_result}",
+                            file_name=f"decoder_analysis_{datetime.now().strftime('%Y%m%d_%H%M')}.txt",
+                            mime="text/plain"
+                        )
+                    else:
+                        st.error("Could not extract text from document. Please try a different file.")
 
 # Session state initialization
 if 'is_premium' not in st.session_state:
