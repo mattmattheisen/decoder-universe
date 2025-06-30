@@ -328,23 +328,26 @@ def show_premium_upgrade():
     """Display premium upgrade call-to-action"""
     st.markdown("""
     <div class="upgrade-cta">
-        <h3>🔓 Unlock Full Protection with Decoder Universe Premium</h3>
-        <p>Get access to comprehensive analysis tools, detailed tactics libraries, and advanced protection strategies for just <strong>$9.95/month</strong></p>
-        <ul style="text-align: left; max-width: 400px; margin: 1rem auto;">
-            <li>✅ Unlimited document scanning & analysis</li>
-            <li>✅ Complete tactics & red flags databases</li>
-            <li>✅ Advanced psychological manipulation guides</li>
-            <li>✅ Conflict of interest detection tools</li>
-            <li>✅ Priority customer support</li>
+        <h3>🌟 Unlock the ENTIRE Decoder Universe Premium</h3>
+        <p><strong>One subscription = Full access to ALL current and future decoders!</strong><br>
+        Get unlimited access to every decoder with advanced features for just <strong>$9.95/month</strong></p>
+        <ul style="text-align: left; max-width: 500px; margin: 1rem auto;">
+            <li>🔓 <strong>ALL 4 Premium Decoders:</strong> Financial, Real Estate, Car Sales & Funeral</li>
+            <li>📄 <strong>Unlimited document scanning & analysis</strong> across all categories</li>
+            <li>🎯 <strong>Complete tactics & red flags databases</strong> for every industry</li>
+            <li>🧠 <strong>Advanced psychological manipulation guides</strong> for all sales types</li>
+            <li>⚡ <strong>Exclusive access to new decoders</strong> (Timeshare, Crypto, Insurance)</li>
+            <li>🛡️ <strong>Priority expert support</strong> and consultation</li>
         </ul>
+        <p style="margin-top: 1rem;"><em>💡 That's 4+ professional decoder apps for less than $2.50 each per month!</em></p>
     </div>
     """, unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        if st.button("🔥 Upgrade to Premium - $9.95/month", use_container_width=True, type="primary"):
+        if st.button("🌟 Unlock ENTIRE Universe - $9.95/month", use_container_width=True, type="primary"):
             st.session_state.is_premium = True
-            st.success("🎉 Welcome to Premium! You now have access to all advanced features.")
+            st.success("🎉 Welcome to Decoder Universe Premium! You now have full access to ALL decoders and advanced features.")
             st.rerun()
 
 def show_dashboard():
@@ -357,9 +360,9 @@ def show_dashboard():
     
     # Premium status indicator
     if st.session_state.is_premium:
-        st.success("🔓 **Premium Account Active** - You have access to all advanced features!")
+        st.success("🌟 **Decoder Universe Premium Active** - Full access to ALL decoders and advanced features!")
     else:
-        st.info("🔍 **Free Preview Mode** - Upgrade to unlock advanced protection tools")
+        st.info("🔍 **Free Preview Mode** - Upgrade once to unlock the entire Decoder Universe")
     
     st.markdown("### Available Decoders")
     
@@ -447,9 +450,9 @@ def show_decoder_detail(decoder_key):
         else:
             st.markdown("""
             <div class="premium-overlay">
-                <strong>🔒 Premium Feature</strong><br>
+                <strong>🔒 Universe Premium Feature</strong><br>
                 Unlock 5+ additional advanced tactics used by industry professionals.<br>
-                <em>Upgrade to see sophisticated manipulation techniques and how to counter them.</em>
+                <em>One upgrade unlocks ALL decoders with sophisticated manipulation techniques.</em>
             </div>
             """, unsafe_allow_html=True)
     
@@ -476,9 +479,9 @@ def show_decoder_detail(decoder_key):
         else:
             st.markdown("""
             <div class="premium-overlay">
-                <strong>🔒 Premium Feature</strong><br>
-                Access 5+ expert-level protection strategies.<br>
-                <em>Upgrade for comprehensive defense techniques and legal insights.</em>
+                <strong>🔒 Universe Premium Feature</strong><br>
+                Access 5+ expert-level protection strategies across ALL industries.<br>
+                <em>One upgrade = comprehensive defense for every sales situation.</em>
             </div>
             """, unsafe_allow_html=True)
     
@@ -505,32 +508,32 @@ def show_decoder_detail(decoder_key):
         else:
             st.markdown("""
             <div class="premium-overlay">
-                <strong>🔒 Premium Feature</strong><br>
-                Discover 5+ critical warning signs that only experts know.<br>
-                <em>Upgrade to identify the most dangerous red flags.</em>
+                <strong>🔒 Universe Premium Feature</strong><br>
+                Discover 5+ critical warning signs across ALL decoder categories.<br>
+                <em>One upgrade unlocks expert red flags for every sales scenario.</em>
             </div>
             """, unsafe_allow_html=True)
     
     # Premium features section for free users
     if not st.session_state.is_premium:
         st.markdown("---")
-        st.markdown("### 🔒 Premium-Only Features")
+        st.markdown("### 🔒 Premium Universe Features")
         
         prem_col1, prem_col2 = st.columns(2)
         with prem_col1:
             st.markdown("""
-            **📄 Document Analysis**
-            - Upload contracts for AI-powered analysis
-            - Identify hidden clauses and unfavorable terms
+            **📄 Universal Document Analysis**
+            - Upload ANY contracts across all decoder categories
+            - AI-powered analysis for financial, real estate, auto & funeral documents
             - Get plain-English explanations of complex language
             """)
         
         with prem_col2:
             st.markdown("""
-            **🧠 Psychological Tactics Guide**
-            - Deep-dive into manipulation psychology
-            - Learn about cognitive biases exploited by salespeople
-            - Master counter-techniques and mental defenses
+            **🧠 Complete Psychology Tactics Library**
+            - Deep-dive into manipulation psychology across ALL industries
+            - Learn cognitive biases exploited by every type of salesperson
+            - Master counter-techniques for any sales situation
             """)
         
         show_premium_upgrade()
