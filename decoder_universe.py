@@ -150,45 +150,6 @@ PREMIUM_APP_URLS = {
     "funeral_director": "https://funeral-home-decoder-p6bfaya2wqy4wgzoxrsa48.streamlit.app/"
 }
 
-def show_premium_app_access(decoder_key):
-    """Show premium app access for founding members"""
-    decoder = DECODERS[decoder_key]
-    app_url = PREMIUM_APP_URLS.get(decoder_key)
-    
-    if app_url:
-        st.markdown("---")
-        st.markdown("### 🌟 Founding Member Exclusive Access")
-        
-        col1, col2 = st.columns([2, 1])
-        with col1:
-            st.markdown(f"""
-            **🚀 Launch Your Complete {decoder['name']} App**
-            
-            Access the full-featured app with advanced tools:
-            • Interactive calculators and analysis tools
-            • Comprehensive databases and reference materials  
-            • Meeting preparation and strategy guides
-            • Psychology and manipulation tactics training
-            • Real industry data and case studies
-            """)
-        
-        with col2:
-            st.markdown("&nbsp;")  # Spacing
-            if st.button(f"🚀 Launch Full {decoder['icon']} App", use_container_width=True, type="primary"):
-                st.markdown(f"""
-                <script>
-                window.open('{app_url}', '_blank');
-                </script>
-                """, unsafe_allow_html=True)
-                st.success(f"Opening your complete {decoder['name']} app in a new tab!")
-                st.markdown(f"**If it didn't open automatically, [click here]({app_url})**")
-
-# Session state initialization
-if 'is_premium' not in st.session_state:
-    st.session_state.is_premium = False
-if 'current_decoder' not in st.session_state:
-    st.session_state.current_decoder = None
-
 def extract_text_from_file(uploaded_file):
     """Extract text from various file types"""
     text = ""
@@ -343,6 +304,303 @@ def show_document_analysis(decoder_key):
                         )
                     else:
                         st.error("Could not extract text from document. Please try a different file.")
+
+def show_premium_app_access(decoder_key):
+    """Show premium app access for founding members"""
+    decoder = DECODERS[decoder_key]
+    app_url = PREMIUM_APP_URLS.get(decoder_key)
+    
+    if app_url:
+        st.markdown("---")
+        st.markdown("### 🌟 Founding Member Exclusive Access")
+        
+        col1, col2 = st.columns([2, 1])
+        with col1:
+            st.markdown(f"""
+            **🚀 Launch Your Complete {decoder['name']} App**
+            
+            Access the full-featured app with advanced tools:
+            • Interactive calculators and analysis tools
+            • Comprehensive databases and reference materials  
+            • Meeting preparation and strategy guides
+            • Psychology and manipulation tactics training
+            • Real industry data and case studies
+            """)
+        
+        with col2:
+            st.markdown("&nbsp;")  # Spacing
+            if st.button(f"🚀 Launch Full {decoder['icon']} App", use_container_width=True, type="primary"):
+                st.markdown(f"""
+                <script>
+                window.open('{app_url}', '_blank');
+                </script>
+                """, unsafe_allow_html=True)
+                st.success(f"Opening your complete {decoder['name']} app in a new tab!")
+                st.markdown(f"**If it didn't open automatically, [click here]({app_url})**")
+
+def show_legal_disclaimers():
+    """Show comprehensive legal disclaimers and terms"""
+    st.markdown("---")
+    st.markdown("### ⚖️ Legal Disclaimers & Terms of Use")
+    
+    disclaimer_tabs = st.tabs(["📋 General Disclaimer", "🏦 Financial", "🏠 Real Estate", "🚗 Automotive", "⚱️ Funeral", "🔒 Privacy & Data"])
+    
+    with disclaimer_tabs[0]:
+        st.markdown("""
+        **EDUCATIONAL PURPOSES ONLY**
+        
+        Decoder Universe provides educational information designed to help consumers understand sales tactics and protect themselves from manipulation. This platform:
+        
+        • **Is NOT professional advice** - We do not provide financial, legal, real estate, or other professional advice
+        • **Educational content only** - All information is for informational and educational purposes
+        • **No professional relationship** - Use of this platform does not create any advisor-client relationship
+        • **User responsibility** - You assume full responsibility for any decisions based on this information
+        • **No guarantees** - We make no warranties about outcomes from using this information
+        • **Consult professionals** - Always consult qualified professionals for specific advice
+        
+        **LIMITATION OF LIABILITY**
+        
+        To the maximum extent permitted by law, Decoder Universe and its operators shall not be liable for any direct, indirect, incidental, consequential, or punitive damages arising from your use of this platform, including but not limited to financial losses, business interruption, or personal injury.
+        
+        **USER RESPONSIBILITIES**
+        
+        By using this platform, you agree to:
+        • Use information for educational purposes only
+        • Make independent decisions about professional services
+        • Verify all information independently before taking action
+        • Not rely solely on this platform for important decisions
+        • Consult appropriate professionals for advice
+        """)
+    
+    with disclaimer_tabs[1]:
+        st.markdown("""
+        **FINANCIAL SERVICES DISCLAIMER**
+        
+        **NOT INVESTMENT OR FINANCIAL ADVICE**
+        • Content related to financial advisors, fees, and investments is educational only
+        • We are not registered investment advisors, broker-dealers, or financial planners
+        • No content constitutes investment advice, financial planning, or recommendations
+        • Past performance information does not predict future results
+        
+        **REGULATORY COMPLIANCE**
+        • Fee and compensation data is based on publicly available disclosure documents
+        • We encourage users to verify all information with official regulatory sources
+        • Check FINRA BrokerCheck and SEC records for advisor information
+        • Understand that regulations and compensation structures change over time
+        
+        **PROFESSIONAL CONSULTATION REQUIRED**
+        • Always consult licensed financial professionals for personalized advice
+        • Consider fee-only financial advisors for unbiased guidance
+        • Verify all advisor credentials and regulatory standing independently
+        • Make investment decisions based on your individual circumstances
+        """)
+    
+    with disclaimer_tabs[2]:
+        st.markdown("""
+        **REAL ESTATE SERVICES DISCLAIMER**
+        
+        **NOT REAL ESTATE ADVICE**
+        • Content about real estate agents and transactions is educational only
+        • We are not licensed real estate professionals or attorneys
+        • Real estate laws and practices vary by state and locality
+        • No content constitutes real estate or legal advice
+        
+        **MARKET INFORMATION**
+        • Market data and pricing information may not be current or accurate
+        • Real estate values and market conditions change frequently
+        • Always verify market information with local real estate professionals
+        • Obtain current market analyses for specific properties or areas
+        
+        **PROFESSIONAL CONSULTATION REQUIRED**
+        • Consult licensed real estate agents for market guidance
+        • Use qualified real estate attorneys for contract and legal matters
+        • Obtain professional inspections and appraisals
+        • Verify all legal requirements with local authorities
+        """)
+    
+    with disclaimer_tabs[3]:
+        st.markdown("""
+        **AUTOMOTIVE SERVICES DISCLAIMER**
+        
+        **NOT AUTOMOTIVE ADVICE**
+        • Content about car buying and dealership practices is educational only
+        • We are not automotive professionals or consumer finance experts
+        • Vehicle values, financing terms, and regulations vary by location
+        • No content constitutes specific purchasing or financing advice
+        
+        **VEHICLE INFORMATION**
+        • Vehicle values and market data may not be current
+        • Financing terms and incentives change frequently
+        • Always verify vehicle history, condition, and value independently
+        • Obtain professional inspections for used vehicles
+        
+        **PROFESSIONAL CONSULTATION REQUIRED**
+        • Consult automotive professionals for technical advice
+        • Use qualified mechanics for vehicle inspections
+        • Verify financing terms with multiple lenders
+        • Understand your consumer rights under applicable laws
+        """)
+    
+    with disclaimer_tabs[4]:
+        st.markdown("""
+        **FUNERAL SERVICES DISCLAIMER**
+        
+        **NOT LEGAL OR FUNERAL INDUSTRY ADVICE**
+        • Content about funeral homes and services is educational only
+        • We are not funeral industry professionals or attorneys
+        • Funeral regulations and requirements vary by state and locality
+        • No content constitutes legal or professional funeral advice
+        
+        **REGULATORY INFORMATION**
+        • References to FTC Funeral Rule and state laws are for general information
+        • Regulations and requirements may have changed since content creation
+        • Always verify current legal requirements with appropriate authorities
+        • Funeral home practices and pricing vary significantly
+        
+        **PROFESSIONAL CONSULTATION REQUIRED**
+        • Consult funeral industry professionals for specific guidance
+        • Use qualified attorneys for legal matters related to death and estates
+        • Verify all legal requirements with local authorities
+        • Consider emotional support resources during difficult times
+        """)
+    
+    with disclaimer_tabs[5]:
+        st.markdown("""
+        **PRIVACY & DATA PROTECTION**
+        
+        **DATA COLLECTION**
+        • We collect minimal data necessary for platform operation
+        • Document analysis is processed securely and not stored permanently
+        • Usage analytics may be collected to improve the platform
+        • No personal financial information is stored on our servers
+        
+        **THIRD-PARTY SERVICES**
+        • Document analysis uses OpenAI services subject to their privacy policy
+        • Platform hosted on Streamlit Cloud subject to their terms
+        • We do not control third-party data handling practices
+        • Review third-party privacy policies for complete information
+        
+        **DATA SECURITY**
+        • We implement reasonable security measures to protect user data
+        • No system is completely secure - use caution with sensitive information
+        • We are not responsible for unauthorized access beyond our reasonable control
+        • Report security concerns immediately to our support team
+        
+        **USER RIGHTS**
+        • You may request deletion of any data we have collected
+        • You can discontinue use of the platform at any time
+        • Contact us for questions about data handling or privacy concerns
+        • We will respond to privacy requests in accordance with applicable law
+        """)
+
+def show_terms_of_service():
+    """Show terms of service"""
+    st.markdown("### 📜 Terms of Service")
+    
+    terms_tabs = st.tabs(["🎯 User Agreement", "💳 Payment Terms", "🚫 Prohibited Uses", "⚖️ Legal Terms"])
+    
+    with terms_tabs[0]:
+        st.markdown("""
+        **ACCEPTANCE OF TERMS**
+        
+        By accessing and using Decoder Universe, you accept and agree to be bound by these Terms of Service. If you do not agree to these terms, you may not use this platform.
+        
+        **PERMITTED USES**
+        • Educational research and personal knowledge enhancement
+        • Preparation for interactions with sales professionals
+        • Understanding industry practices and consumer protection
+        • Personal reference and decision-making support
+        
+        **ACCOUNT RESPONSIBILITIES**
+        • Provide accurate information if creating an account
+        • Maintain confidentiality of any account credentials
+        • Notify us immediately of unauthorized account access
+        • Use the platform in accordance with these terms
+        
+        **CONTENT ACCURACY**
+        • We strive for accuracy but make no guarantees about content correctness
+        • Information may become outdated or change without notice
+        • Users should verify all information independently
+        • Report inaccuracies to help us improve the platform
+        """)
+    
+    with terms_tabs[1]:
+        st.markdown("""
+        **FOUNDING MEMBER TERMS**
+        
+        **LIFETIME ACCESS**
+        • Founding membership grants lifetime access to current and future decoder applications
+        • Access includes all premium features and content available at time of payment
+        • New features and decoders will be added to your lifetime access at no additional cost
+        
+        **PAYMENT PROCESSING**
+        • Payments processed securely through Stripe payment systems
+        • All sales are final - no refunds after access is granted
+        • Payment confirmation required before premium access is activated
+        • Contact support within 24 hours for payment processing issues
+        
+        **SERVICE AVAILABILITY**
+        • We strive for 99% uptime but cannot guarantee continuous availability
+        • Scheduled maintenance will be announced in advance when possible
+        • Premium access may be temporarily unavailable during system updates
+        • No refunds for temporary service interruptions
+        """)
+    
+    with terms_tabs[2]:
+        st.markdown("""
+        **PROHIBITED ACTIVITIES**
+        
+        You may NOT use this platform to:
+        • Provide professional advice to others without proper licensing
+        • Reproduce, distribute, or sell platform content without permission
+        • Attempt to reverse engineer or copy platform functionality
+        • Upload malicious files or attempt to compromise platform security
+        • Use automated systems to access or scrape platform content
+        • Violate any applicable laws or regulations
+        • Harass other users or platform operators
+        • Misrepresent your identity or credentials
+        
+        **CONTENT GUIDELINES**
+        • Document uploads should be legitimate personal documents only
+        • Do not upload documents containing others' personal information
+        • Do not upload copyrighted materials you don't have rights to analyze
+        • We reserve the right to refuse analysis of inappropriate content
+        
+        **ENFORCEMENT**
+        • Violations may result in immediate termination of access
+        • We reserve the right to refuse service to anyone
+        • Legal action may be pursued for serious violations
+        • No refunds for termination due to terms violations
+        """)
+    
+    with terms_tabs[3]:
+        st.markdown("""
+        **LEGAL PROVISIONS**
+        
+        **INTELLECTUAL PROPERTY**
+        • All platform content, design, and functionality is proprietary
+        • Users retain rights to documents they upload for analysis
+        • Analysis results are provided for user's personal use only
+        • No license granted for commercial use of platform content
+        
+        **DISPUTE RESOLUTION**
+        • Good faith effort to resolve disputes directly before legal action
+        • Disputes subject to jurisdiction where platform operators are located
+        • Arbitration may be required for certain types of disputes
+        • Class action lawsuits are waived to the extent permitted by law
+        
+        **CHANGES TO TERMS**
+        • Terms may be updated periodically with reasonable notice
+        • Continued use after changes constitutes acceptance of new terms
+        • Material changes will be highlighted and require explicit acceptance
+        • Users may discontinue use if they disagree with term changes
+        
+        **CONTACT INFORMATION**
+        • Questions about terms should be directed to platform support
+        • Legal notices should be sent to designated contact address
+        • We will respond to legitimate inquiries within reasonable time
+        • Emergency security issues should be reported immediately
+        """)
 
 # Session state initialization
 if 'is_premium' not in st.session_state:
@@ -652,6 +910,48 @@ def show_dashboard():
     if not st.session_state.is_premium:
         st.markdown("---")
         show_premium_upgrade()
+    
+    # Footer with legal links
+    st.markdown("---")
+    st.markdown("### ⚖️ Legal & Compliance")
+    
+    footer_col1, footer_col2, footer_col3, footer_col4 = st.columns(4)
+    
+    with footer_col1:
+        if st.button("📋 Disclaimers", use_container_width=True, key="footer_disclaimers"):
+            st.session_state.show_legal = True
+            st.rerun()
+    
+    with footer_col2:
+        if st.button("📜 Terms of Service", use_container_width=True, key="footer_terms"):
+            st.session_state.show_terms = True
+            st.rerun()
+    
+    with footer_col3:
+        if st.button("🔒 Privacy Policy", use_container_width=True, key="footer_privacy"):
+            st.session_state.show_privacy = True
+            st.rerun()
+    
+    with footer_col4:
+        if st.button("📞 Compliance Info", use_container_width=True, key="footer_compliance"):
+            st.info("""
+            **For Compliance Inquiries:**
+            
+            This platform provides educational content only and does not constitute professional advice. 
+            
+            All content is designed to help consumers understand sales tactics and make informed decisions.
+            
+            Questions about compliance or regulatory matters should be directed to appropriate legal counsel.
+            """)
+    
+    # Copyright and version info
+    st.markdown("""
+    <div style='text-align: center; color: #666; margin-top: 2rem; padding: 1rem; border-top: 1px solid #eee;'>
+        <p><strong>Decoder Universe</strong> | Educational Consumer Protection Platform</p>
+        <p><small>© 2025 Decoder Universe. All rights reserved. | Version 1.0 | For educational purposes only.</small></p>
+        <p><small>This platform does not provide professional advice. Consult qualified professionals for specific guidance.</small></p>
+    </div>
+    """, unsafe_allow_html=True)
 
 def show_decoder_detail(decoder_key):
     decoder = DECODERS[decoder_key]
@@ -796,6 +1096,26 @@ def show_decoder_detail(decoder_key):
         
         show_premium_upgrade()
     
+    # Legal and compliance section
+    st.markdown("---")
+    
+    legal_col1, legal_col2, legal_col3 = st.columns(3)
+    
+    with legal_col1:
+        if st.button("📋 Legal Disclaimers", use_container_width=True):
+            st.session_state.show_legal = True
+            st.rerun()
+    
+    with legal_col2:
+        if st.button("📜 Terms of Service", use_container_width=True):
+            st.session_state.show_terms = True
+            st.rerun()
+    
+    with legal_col3:
+        if st.button("🔒 Privacy Policy", use_container_width=True):
+            st.session_state.show_privacy = True
+            st.rerun()
+    
     # Universal remember section
     st.markdown("---")
     st.markdown("### 💡 Remember")
@@ -809,7 +1129,82 @@ def show_decoder_detail(decoder_key):
     )
 
 def main():
-    # Show appropriate page
+    # Initialize session state for legal pages
+    if 'show_legal' not in st.session_state:
+        st.session_state.show_legal = False
+    if 'show_terms' not in st.session_state:
+        st.session_state.show_terms = False
+    if 'show_privacy' not in st.session_state:
+        st.session_state.show_privacy = False
+    
+    # Show legal pages if requested
+    if st.session_state.show_legal:
+        if st.button("← Back to Decoder Universe", key="back_from_legal"):
+            st.session_state.show_legal = False
+            st.rerun()
+        show_legal_disclaimers()
+        return
+    
+    if st.session_state.show_terms:
+        if st.button("← Back to Decoder Universe", key="back_from_terms"):
+            st.session_state.show_terms = False
+            st.rerun()
+        show_terms_of_service()
+        return
+    
+    if st.session_state.show_privacy:
+        if st.button("← Back to Decoder Universe", key="back_from_privacy"):
+            st.session_state.show_privacy = False
+            st.rerun()
+        st.markdown("### 🔒 Privacy Policy")
+        st.markdown("""
+        **DATA COLLECTION & USE**
+        
+        Decoder Universe collects minimal data to provide educational services:
+        
+        **Information We Collect:**
+        • Usage analytics (pages visited, features used) to improve the platform
+        • Document content temporarily for AI analysis (not stored permanently)
+        • Payment information (processed securely through Stripe, not stored by us)
+        • Account status (free vs founding member) to control access
+        
+        **How We Use Information:**
+        • Provide document analysis services through OpenAI API
+        • Improve platform functionality and user experience
+        • Verify founding member status for premium access
+        • Communicate important service updates
+        
+        **Information Sharing:**
+        • Document content shared with OpenAI for analysis (subject to their privacy policy)
+        • Payment processing through Stripe (subject to their privacy policy)
+        • We do not sell or share personal information with other third parties
+        • Anonymous usage statistics may be shared for research purposes
+        
+        **Data Security:**
+        • All data transmission encrypted using industry-standard protocols
+        • Document analysis performed securely and content not permanently stored
+        • Access controls protect against unauthorized data access
+        • Regular security assessments and updates to protect user information
+        
+        **Your Rights:**
+        • Request deletion of any data we have collected about you
+        • Ask questions about our data handling practices
+        • Discontinue use of the platform at any time
+        • Contact us to exercise your privacy rights
+        
+        **Contact for Privacy Matters:**
+        • Email privacy questions to: [insert contact email]
+        • We will respond to privacy requests within 30 days
+        • Report security concerns immediately for prompt investigation
+        
+        **Updates to Privacy Policy:**
+        • We may update this policy to reflect changes in our practices
+        • Material changes will be announced prominently on the platform
+        • Continued use after changes constitutes acceptance of updated policy
+        """)
+        return
+    
+    # Show appropriate page based on navigation
     if st.session_state.current_decoder:
         show_decoder_detail(st.session_state.current_decoder)
     else:
