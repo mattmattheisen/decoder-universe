@@ -328,26 +328,26 @@ def show_premium_upgrade():
     """Display premium upgrade call-to-action"""
     st.markdown("""
     <div class="upgrade-cta">
-        <h3>🌟 Unlock the ENTIRE Decoder Universe Premium</h3>
-        <p><strong>One subscription = Full access to ALL current and future decoders!</strong><br>
-        Get unlimited access to every decoder with advanced features for just <strong>$9.95/month</strong></p>
+        <h3>🌟 Become a Founding Member - Lifetime Access!</h3>
+        <p><strong>One payment = Lifetime access to ALL current and future decoders!</strong><br>
+        Join our founding members for just <strong>$12.95 - Forever!</strong></p>
         <ul style="text-align: left; max-width: 500px; margin: 1rem auto;">
             <li>🔓 <strong>ALL 4 Premium Decoders:</strong> Financial, Real Estate, Car Sales & Funeral</li>
-            <li>📄 <strong>Unlimited document scanning & analysis</strong> across all categories</li>
+            <li>📄 <strong>Unlimited document scanning & analysis</strong> - for life</li>
             <li>🎯 <strong>Complete tactics & red flags databases</strong> for every industry</li>
             <li>🧠 <strong>Advanced psychological manipulation guides</strong> for all sales types</li>
-            <li>⚡ <strong>Exclusive access to new decoders</strong> (Timeshare, Crypto, Insurance)</li>
-            <li>🛡️ <strong>Priority expert support</strong> and consultation</li>
+            <li>⚡ <strong>Lifetime access to ALL future decoders</strong> (Timeshare, Crypto, Insurance & more)</li>
+            <li>🛡️ <strong>Founding member priority support</strong> and consultation</li>
         </ul>
-        <p style="margin-top: 1rem;"><em>💡 That's 4+ professional decoder apps for less than $2.50 each per month!</em></p>
+        <p style="margin-top: 1rem;"><em>💡 Pay once, protected forever. No subscriptions, no recurring bills!</em></p>
     </div>
     """, unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        if st.button("🌟 Unlock ENTIRE Universe - $9.95/month", use_container_width=True, type="primary"):
+        if st.button("🌟 Become Founding Member - $12.95 Lifetime!", use_container_width=True, type="primary"):
             st.session_state.is_premium = True
-            st.success("🎉 Welcome to Decoder Universe Premium! You now have full access to ALL decoders and advanced features.")
+            st.success("🎉 Welcome, Founding Member! You now have lifetime access to ALL decoders and future releases.")
             st.rerun()
 
 def show_dashboard():
@@ -360,9 +360,9 @@ def show_dashboard():
     
     # Premium status indicator
     if st.session_state.is_premium:
-        st.success("🌟 **Decoder Universe Premium Active** - Full access to ALL decoders and advanced features!")
+        st.success("🌟 **Founding Member Status Active** - Lifetime access to ALL decoders and future releases!")
     else:
-        st.info("🔍 **Free Preview Mode** - Upgrade once to unlock the entire Decoder Universe")
+        st.info("🔍 **Free Preview Mode** - Join our founding members for lifetime access to everything")
     
     st.markdown("### Available Decoders")
     
@@ -385,6 +385,33 @@ def show_dashboard():
             st.markdown(badge_html, unsafe_allow_html=True)
     
     # Coming Soon section
+    st.markdown("---")
+    
+    # Why We're Different section
+    st.markdown("### 🛡️ Why We're Different")
+    st.markdown("""
+    <div style="background: linear-gradient(135deg, #f8f9fa, #e9ecef); padding: 1.5rem; border-radius: 12px; margin: 1rem 0;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div>
+                <strong>🎯 We Practice What We Preach</strong><br>
+                <span style="color: #666;">No predatory recurring billing - just honest, one-time pricing</span>
+            </div>
+            <div>
+                <strong>🛡️ True Consumer Protection</strong><br>
+                <span style="color: #666;">Our protection extends to our own fair pricing model</span>
+            </div>
+            <div>
+                <strong>💡 Anti-Manipulation Pricing</strong><br>
+                <span style="color: #666;">No subscription traps in an industry full of them</span>
+            </div>
+            <div>
+                <strong>🤝 Builds Genuine Trust</strong><br>
+                <span style="color: #666;">We're not trying to extract ongoing revenue from you</span>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
     st.markdown("---")
     st.markdown("### 🚀 Coming Soon")
     st.markdown("*Expanding our protection universe with these upcoming decoders:*")
@@ -450,9 +477,9 @@ def show_decoder_detail(decoder_key):
         else:
             st.markdown("""
             <div class="premium-overlay">
-                <strong>🔒 Universe Premium Feature</strong><br>
+                <strong>🔒 Founding Member Feature</strong><br>
                 Unlock 5+ additional advanced tactics used by industry professionals.<br>
-                <em>One upgrade unlocks ALL decoders with sophisticated manipulation techniques.</em>
+                <em>Founding members get ALL current and future decoder content - forever!</em>
             </div>
             """, unsafe_allow_html=True)
     
@@ -479,9 +506,9 @@ def show_decoder_detail(decoder_key):
         else:
             st.markdown("""
             <div class="premium-overlay">
-                <strong>🔒 Universe Premium Feature</strong><br>
+                <strong>🔒 Founding Member Feature</strong><br>
                 Access 5+ expert-level protection strategies across ALL industries.<br>
-                <em>One upgrade = comprehensive defense for every sales situation.</em>
+                <em>Lifetime access = comprehensive defense for every sales situation.</em>
             </div>
             """, unsafe_allow_html=True)
     
