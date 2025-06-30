@@ -142,6 +142,47 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# App URLs for premium access
+PREMIUM_APP_URLS = {
+    "financial_advisor": "https://advisor-decoder-g33giprnbapgqxybkgxk5h.streamlit.app/",
+    "car_salesman": "https://car-salesman-decoder-tiye3psbwpspizha8kta8o.streamlit.app/",
+    "real_estate": "https://real-estate-agent-decoder-cqunc4r2zarq4rtqkej7bh.streamlit.app/",
+    "funeral_director": "https://funeral-home-decoder-p6bfaya2wqy4wgzoxrsa48.streamlit.app/"
+}
+
+def show_premium_app_access(decoder_key):
+    """Show premium app access for founding members"""
+    decoder = DECODERS[decoder_key]
+    app_url = PREMIUM_APP_URLS.get(decoder_key)
+    
+    if app_url:
+        st.markdown("---")
+        st.markdown("### 🌟 Founding Member Exclusive Access")
+        
+        col1, col2 = st.columns([2, 1])
+        with col1:
+            st.markdown(f"""
+            **🚀 Launch Your Complete {decoder['name']} App**
+            
+            Access the full-featured app with advanced tools:
+            • Interactive calculators and analysis tools
+            • Comprehensive databases and reference materials  
+            • Meeting preparation and strategy guides
+            • Psychology and manipulation tactics training
+            • Real industry data and case studies
+            """)
+        
+        with col2:
+            st.markdown("&nbsp;")  # Spacing
+            if st.button(f"🚀 Launch Full {decoder['icon']} App", use_container_width=True, type="primary"):
+                st.markdown(f"""
+                <script>
+                window.open('{app_url}', '_blank');
+                </script>
+                """, unsafe_allow_html=True)
+                st.success(f"Opening your complete {decoder['name']} app in a new tab!")
+                st.markdown(f"**If it didn't open automatically, [click here]({app_url})**")
+
 # Session state initialization
 if 'is_premium' not in st.session_state:
     st.session_state.is_premium = False
@@ -508,17 +549,17 @@ def show_premium_upgrade():
     st.markdown("""
     <div class="upgrade-cta">
         <h3>🌟 Become a Founding Member - Lifetime Access!</h3>
-        <p><strong>One payment = Lifetime access to ALL current and future decoders!</strong><br>
+        <p><strong>One payment = Lifetime access to ALL complete decoder apps + AI analysis!</strong><br>
         Join our founding members for just <strong>$12.95 - Forever!</strong></p>
         <ul style="text-align: left; max-width: 500px; margin: 1rem auto;">
-            <li>🔓 <strong>ALL 4 Premium Decoders:</strong> Financial, Real Estate, Car Sales & Funeral</li>
-            <li>📄 <strong>Unlimited document scanning & analysis</strong> - for life</li>
-            <li>🎯 <strong>Complete tactics & red flags databases</strong> for every industry</li>
-            <li>🧠 <strong>Advanced psychological manipulation guides</strong> for all sales types</li>
+            <li>🚀 <strong>Complete Access to 4 Full Decoder Apps:</strong> Advanced tools, calculators & databases</li>
+            <li>🧠 <strong>Psychology & Manipulation Training:</strong> 5-stage process, meeting prep, negotiation</li>
+            <li>💰 <strong>Real Industry Compensation Data:</strong> Actual disclosure documents from major firms</li>
+            <li>📄 <strong>AI Document Analysis:</strong> Upload contracts for intelligent analysis - unlimited</li>
             <li>⚡ <strong>Lifetime access to ALL future decoders</strong> (Timeshare, Crypto, Insurance & more)</li>
             <li>🛡️ <strong>Founding member priority support</strong> and consultation</li>
         </ul>
-        <p style="margin-top: 1rem;"><em>💡 Pay once, protected forever. No subscriptions, no recurring bills!</em></p>
+        <p style="margin-top: 1rem;"><em>💡 4 complete professional apps + AI analysis + future releases - all for life!</em></p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -720,6 +761,10 @@ def show_decoder_detail(decoder_key):
             </div>
             """, unsafe_allow_html=True)
     
+    # Founding Member App Access
+    if st.session_state.is_premium:
+        show_premium_app_access(decoder_key)
+    
     # Founding Member Document Analysis
     if st.session_state.is_premium:
         st.markdown("---")
@@ -733,20 +778,20 @@ def show_decoder_detail(decoder_key):
         prem_col1, prem_col2 = st.columns(2)
         with prem_col1:
             st.markdown("""
+            **🚀 Complete Decoder App Access**
+            - Launch full-featured individual decoder apps with advanced tools
+            - Interactive calculators, databases, and comprehensive analysis
+            - Meeting preparation guides and negotiation strategies
+            - Psychology training and real industry compensation data
+            """)
+        
+        with prem_col2:
+            st.markdown("""
             **📄 AI-Powered Document Analysis**
             - Upload ANY contracts across all decoder categories - forever
             - Advanced AI analysis for financial, real estate, auto & funeral documents
             - Get plain-English explanations and red flag detection - no limits
             - Download detailed analysis reports for your records
-            """)
-        
-        with prem_col2:
-            st.markdown("""
-            **🧠 Complete Psychology Tactics Library**
-            - Deep-dive into manipulation psychology across ALL industries
-            - Learn cognitive biases exploited by every type of salesperson
-            - Master counter-techniques for any sales situation - lifetime access
-            - Real compensation data from actual industry disclosure documents
             """)
         
         show_premium_upgrade()
